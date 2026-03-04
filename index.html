@@ -34,6 +34,36 @@
     <link rel="manifest" href="site.webmanifest">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="icons/favicon-144x144.png">
+<script>
+  (function() {
+    const hostname = window.location.hostname.toLowerCase();
+    let measurementId = '';
+
+    // Check for Custom Domain (includes both with and without 'www')
+    if (hostname === 'www.zeroshare.dippanbhusal.tech' || hostname === 'zeroshare.dippanbhusal.tech') {
+      measurementId = 'G-XTSQ4BN2E0';
+    } 
+    // Check for Vercel Domain
+    else if (hostname === 'zeroshare-io.vercel.app') {
+      measurementId = 'G-4TK1W8M38E';
+    }
+
+    // If a matching domain is found, inject and initialize Google Analytics
+    if (measurementId) {
+      const gtagScript = document.createElement('script');
+      gtagScript.async = true;
+      gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
+      document.head.appendChild(gtagScript);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', measurementId);
+      
+      console.log('Analytics initialized for: ' + measurementId);
+    }
+  })();
+</script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
