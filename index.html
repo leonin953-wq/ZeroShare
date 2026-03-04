@@ -41,6 +41,58 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <link rel="stylesheet" href="assets/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "ZeroShare",
+      "url": "https://zeroshare-io.vercel.app/",
+      "description": "ZeroShare is a zero-knowledge, browser-based peer-to-peer file transfer tool utilizing WebRTC and AES-256 encryption.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires WebRTC and Web Crypto API support.",
+      "author": {
+        "@type": "Person",
+        "name": "Dippan Bhusal",
+        "url": "https://dippanbhusal.tech",
+        "sameAs": [
+          "https://github.com/kdippan",
+          "https://linkedin.com/in/dippan-bhusal"
+        ]
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is there a file size limit on ZeroShare?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Because files are streamed in 64KB chunks and not loaded entirely into RAM, you can send files of unlimited size, governed only by your network connection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can ZeroShare or its developers see my files?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely not. ZeroShare uses a zero-knowledge architecture. AES-256 encryption keys are generated locally in your browser and are never transmitted to any server."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 </head>
 <body data-theme="dark">
     <div class="ambient-background"></div>
