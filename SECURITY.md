@@ -13,7 +13,7 @@ Security and privacy are the core foundations of ZeroShare. Because this applica
 
 If you discover a security vulnerability within ZeroShare, please **DO NOT** open a public issue. 
 
-Instead, please send a direct message to Dippan Bhusal via [LinkedIn](https://linkedin.com/in/dippan-bhusal) or through the contact form on my portfolio. 
+Instead, please send a direct message to Dippan Bhusal via [LinkedIn](https://linkedin.com/in/kdippan) or through the contact form on my portfolio. 
 
 Please include:
 - A description of the vulnerability.
