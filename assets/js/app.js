@@ -19,20 +19,16 @@ let peer = null;
 let conn = null;
 let localKeyPair = null;
 let sharedAESKey = null;
-
-// File Receiving State
 let receiveBuffer = [];
 let incomingMeta = null;
 let receivedBytes = 0;
-
-const CHUNK_SIZE = 64 * 1024; // 64KB per chunk to prevent WebRTC channel overflow
+const CHUNK_SIZE = 64 * 1024; 
 
 // =====================================================================
 // 1. Web Crypto API: Key Generation & Derivation
 // =====================================================================
 
 async function initCrypto() {
-    // Generate an Elliptic Curve Diffie-Hellman (ECDH) key pair
     localKeyPair = await crypto.subtle.generateKey(
         { name: "ECDH", namedCurve: "P-256" },
         true, 
@@ -41,21 +37,14 @@ async function initCrypto() {
 }
 
 async function deriveAESKey(peerJwk) {
-    // Import the peer's public key
     const peerPubKey = await crypto.subtle.importKey(
-        "jwk", 
-        peerJwk, 
-        { name: "ECDH", namedCurve: "P-256" }, 
-        true, 
-        []
+        "jwk", peerJwk, { name: "ECDH", namedCurve: "P-256" }, true, []
     );
-    // Mathematically mix our private key with their public key to get a shared AES key
     return await crypto.subtle.deriveKey(
         { name: "ECDH", public: peerPubKey },
         localKeyPair.privateKey,
         { name: "AES-GCM", length: 256 },
-        true, 
-        ["encrypt", "decrypt"]
+        true, ["encrypt", "decrypt"]
     );
 }
 
@@ -63,20 +52,35 @@ async function deriveAESKey(peerJwk) {
 // 2. PeerJS & WebRTC Setup
 // =====================================================================
 
+function generateShortCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 6; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+    return result;
+}
+
 async function initPeer() {
     await initCrypto();
 
-    // Initialize PeerJS (Connects to their free cloud signaling server)
-    peer = new Peer({ debug: 2 });
+    // Request a specific, easy-to-read 6-character ID instead of a long UUID
+    const shortId = generateShortCode();
+    peer = new Peer(shortId, { debug: 2 });
 
     peer.on('open', (id) => {
         myPeerIdEl.textContent = id;
     });
 
-    // Handle Incoming Connections (When someone pastes your ID)
+    // Handle Mobile Disconnects automatically
+    peer.on('disconnected', () => {
+        console.log("Signaling server disconnected. Reconnecting...");
+        if (!peer.destroyed) {
+            peer.reconnect();
+        }
+    });
+
     peer.on('connection', (connection) => {
         if (conn) {
-            connection.close(); // Only allow one connection at a time
+            connection.close(); 
             return;
         }
         conn = connection;
@@ -86,26 +90,25 @@ async function initPeer() {
     peer.on('error', (err) => {
         console.error(err);
         alert('Connection Error: ' + err.type);
+        connectBtn.textContent = "Connect";
+        connectBtn.disabled = false;
     });
 }
 
 function setupConnectionHandlers() {
     conn.on('open', async () => {
         updateStatus(true);
+        connectBtn.textContent = "Connected";
         
-        // Export our public key and send it to the peer
         const exportedPubKey = await crypto.subtle.exportKey("jwk", localKeyPair.publicKey);
         conn.send({ type: 'PUB_KEY', key: exportedPubKey });
     });
 
     conn.on('data', async (msg) => {
-        // Step 1: Handshake & Key Exchange
         if (msg.type === 'PUB_KEY') {
             sharedAESKey = await deriveAESKey(msg.key);
-            console.log("Secure AES-GCM Key Derived Successfully!");
             showTransferUI();
         } 
-        // Step 2: Incoming File Metadata
         else if (msg.type === 'META') {
             incomingMeta = msg;
             receiveBuffer = [];
@@ -113,31 +116,26 @@ function setupConnectionHandlers() {
             progressContainer.style.display = 'block';
             transferLabel.textContent = `Receiving: ${msg.name}...`;
         } 
-        // Step 3: Incoming Encrypted File Chunk
         else if (msg.type === 'CHUNK') {
             try {
                 const iv = new Uint8Array(msg.iv);
                 const decryptedBuffer = await crypto.subtle.decrypt(
-                    { name: "AES-GCM", iv: iv }, 
-                    sharedAESKey, 
-                    msg.data
+                    { name: "AES-GCM", iv: iv }, sharedAESKey, msg.data
                 );
                 receiveBuffer.push(decryptedBuffer);
-                receivedBytes += msg.originalSize; // Track based on pre-encrypted size
+                receivedBytes += msg.originalSize; 
                 updateProgress(receivedBytes, incomingMeta.size);
             } catch (err) {
-                console.error("Decryption failed. Data tampered or key mismatch.", err);
+                console.error("Decryption failed.", err);
             }
         } 
-        // Step 4: End of File
         else if (msg.type === 'EOF') {
             transferLabel.textContent = "Decrypting & Reassembling...";
             setTimeout(() => {
                 const blob = new Blob(receiveBuffer, { type: incomingMeta.fileType });
                 createDownloadableFile(blob, incomingMeta.name);
-                
                 transferLabel.textContent = "Transfer Complete!";
-                progressBar.style.background = "#10b981"; // Green success
+                progressBar.style.background = "#10b981"; 
                 setTimeout(() => { progressContainer.style.display = 'none'; }, 3000);
             }, 500);
         }
@@ -146,73 +144,66 @@ function setupConnectionHandlers() {
     conn.on('close', () => {
         updateStatus(false);
         alert("Peer disconnected.");
-        location.reload(); // Quick reset for mobile
+        location.reload(); 
     });
 }
 
 // =====================================================================
-// 3. File Processing & Sending
+// 3. File Processing & UI Logic
 // =====================================================================
 
 fileInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file || !sharedAESKey || !conn) return;
 
-    // Reset UI
     progressContainer.style.display = 'block';
     transferLabel.textContent = `Encrypting & Sending: ${file.name}...`;
     progressBar.style.background = "var(--gradient-brand)";
     
-    // Send Metadata
     conn.send({ type: 'META', name: file.name, size: file.size, fileType: file.type });
 
     let offset = 0;
-    
-    // Read and Encrypt in Chunks to save RAM
     while (offset < file.size) {
         const chunk = file.slice(offset, offset + CHUNK_SIZE);
         const arrayBuffer = await chunk.arrayBuffer();
-        
-        // Generate a random 12-byte IV for EVERY chunk for maximum AES-GCM security
         const iv = crypto.getRandomValues(new Uint8Array(12));
-        
         const encryptedChunk = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv: iv }, 
-            sharedAESKey, 
-            arrayBuffer
+            { name: "AES-GCM", iv: iv }, sharedAESKey, arrayBuffer
         );
 
-        // Send over WebRTC Data Channel
         conn.send({ 
-            type: 'CHUNK', 
-            iv: Array.from(iv), // PeerJS handles standard arrays better than typed arrays in JSON
-            data: encryptedChunk,
-            originalSize: arrayBuffer.byteLength
+            type: 'CHUNK', iv: Array.from(iv), data: encryptedChunk, originalSize: arrayBuffer.byteLength
         });
 
         offset += CHUNK_SIZE;
         updateProgress(offset, file.size);
-        
-        // Yield to main thread so UI doesn't freeze on mobile
         await new Promise(r => setTimeout(r, 5)); 
     }
-
     conn.send({ type: 'EOF' });
     transferLabel.textContent = "Sent successfully!";
     progressBar.style.background = "#10b981";
-    fileInput.value = ''; // clear input
+    fileInput.value = ''; 
 });
 
-// =====================================================================
-// 4. UI & Utility Functions
-// =====================================================================
-
 connectBtn.addEventListener('click', () => {
-    const targetId = targetPeerIdInput.value.trim();
+    const targetId = targetPeerIdInput.value.trim().toUpperCase();
     if (!targetId) return;
     
     connectBtn.textContent = "Connecting...";
+    connectBtn.disabled = true;
+    
     conn = peer.connect(targetId, { reliable: true });
+    
+    // Fallback timeout in case the short code is wrong
+    setTimeout(() => {
+        if (statusDot.className !== 'dot connected') {
+            alert("Connection timed out. Ensure the 6-character code is correct and the other device is awake.");
+            connectBtn.textContent = "Connect";
+            connectBtn.disabled = false;
+            if (conn) conn.close();
+        }
+    }, 10000);
+
     setupConnectionHandlers();
 });
 
@@ -238,23 +229,12 @@ function updateStatus(isConnected) {
 }
 
 function showTransferUI() {
-    // Anime.js transition
     anime({
-        targets: '#setupSection',
-        opacity: 0,
-        translateY: -20,
-        duration: 400,
-        easing: 'easeInQuad',
+        targets: '#setupSection', opacity: 0, translateY: -20, duration: 400, easing: 'easeInQuad',
         complete: () => {
             setupSection.style.display = 'none';
             transferSection.style.display = 'block';
-            anime({
-                targets: '#transferSection',
-                opacity: [0, 1],
-                translateY: [20, 0],
-                duration: 600,
-                easing: 'easeOutExpo'
-            });
+            anime({ targets: '#transferSection', opacity: [0, 1], translateY: [20, 0], duration: 600, easing: 'easeOutExpo' });
         }
     });
 }
@@ -267,20 +247,11 @@ function updateProgress(current, total) {
 
 function createDownloadableFile(blob, filename) {
     const url = URL.createObjectURL(blob);
-    
     const fileItem = document.createElement('div');
     fileItem.className = 'received-item';
-    fileItem.innerHTML = `
-        <a href="${url}" download="${filename}">
-            <i data-lucide="file-check"></i> 
-            ${filename} (Decrypted)
-        </a>
-        <span style="color: var(--text-muted); font-size: 0.8rem;">Ready</span>
-    `;
-    
+    fileItem.innerHTML = `<a href="${url}" download="${filename}"><i data-lucide="file-check"></i> ${filename} (Decrypted)</a><span style="color: var(--text-muted); font-size: 0.8rem;">Ready</span>`;
     receivedFilesDiv.appendChild(fileItem);
     lucide.createIcons();
 }
 
-// Bootstrap Application
 initPeer();
